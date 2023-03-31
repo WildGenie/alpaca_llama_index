@@ -31,7 +31,7 @@ class LLaMALLM(LLM):
 
         inputs = tokenizer(prompt, return_tensors="pt")
         input_ids = inputs["input_ids"].cuda()
-        
+
         generation_config = GenerationConfig(
             temperature=0.6,
             top_p=0.95,
@@ -45,10 +45,7 @@ class LLaMALLM(LLM):
                 output_scores=True,
                 max_new_tokens=128,
             )
-        response = ""
-        for s in generation_output.sequences:
-            response += tokenizer.decode(s)
-            
+        response = "".join(tokenizer.decode(s) for s in generation_output.sequences)
         response = response[len(prompt):]
         print("Model Response:", response)
         return response
